@@ -16,7 +16,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     RecyclerView rv_list;
     RecyclerViewListAdapter adapter;
-    ArrayList<History> historyArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +28,8 @@ public class HistoryActivity extends AppCompatActivity {
     private void findView() {
         rv_list = findViewById(R.id.rv_list);
 
-        historyArrayList = new ArrayList<>();
 
-        historyArrayList = (ArrayList<History>) getIntent().getSerializableExtra("mylist");
-
-
-        adapter = new RecyclerViewListAdapter(HistoryActivity.this,historyArrayList);
+        adapter = new RecyclerViewListAdapter(HistoryActivity.this,((MyApp)getApplication()).getHistoryList());
         rv_list.setHasFixedSize(true);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
         rv_list.setAdapter(adapter);

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.cashregister.MainActivity;
 import com.example.cashregister.model.Product;
 import com.example.cashregister.R;
 

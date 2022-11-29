@@ -49,7 +49,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, HistoryDetailsActivity.class);
-                intent.putExtra("mylist", history_list.get(position));
+                intent.putExtra("position", position);
                 activity.startActivity(intent);
             }
         });

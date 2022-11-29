@@ -24,12 +24,10 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView tv_product_type, tv_quantity, tv_total;
-    Button btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_zero, btn_clear, btn_buy,btn_manager;
+    Button btn_one, btn_two, btn_three, btn_four, btn_five, btn_six, btn_seven, btn_eight, btn_nine, btn_zero, btn_clear, btn_buy, btn_manager;
     String display_quantity = "";
     ListView lv_list;
     int selected_position = -1;
-    ArrayList<Product> product_array;
-    ArrayList<History> history_product_array;
     Mainadapter mainadapter;
 
     @Override
@@ -43,8 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void findView() {
 
-        product_array = new ArrayList<>();
-        history_product_array = new ArrayList<>();
+
         tv_product_type = findViewById(R.id.tv_product_type);
         tv_total = findViewById(R.id.tv_total);
         tv_quantity = findViewById(R.id.tv_quantity);
@@ -77,34 +74,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_buy.setOnClickListener(this);
         btn_manager.setOnClickListener(this);
 
-        if(getIntent().getExtras()!=null){
-
-            Toast.makeText(MainActivity.this, "HIIIIIIIIIIIIII product", Toast.LENGTH_LONG).show();
-
-            product_array = (ArrayList<Product>) getIntent().getSerializableExtra("remain_data");
-
-        }else {
+        if(((MyApp)getApplication()).getList().size() == 0) {
 
             Product p1 = new Product("Pants", 20.44, 10);
             Product p2 = new Product("Shoes", 10.44, 100);
             Product p3 = new Product("Hats", 5.9, 30);
 
 
-            product_array.add(p1);
-            product_array.add(p2);
-            product_array.add(p3);
-
-
+            ((MyApp) getApplication()).addNewToDO(p1);
+            ((MyApp) getApplication()).addNewToDO(p2);
+            ((MyApp) getApplication()).addNewToDO(p3);
         }
 
 
-
-        mainadapter = new Mainadapter(MainActivity.this, product_array);
+        mainadapter = new Mainadapter(MainActivity.this, ((MyApp) getApplication()).getList());
         lv_list.setAdapter((ListAdapter) mainadapter);
         lv_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                tv_product_type.setText(product_array.get(position).getName());
+                tv_product_type.setText(((MyApp) getApplication()).getList().get(position).getName());
                 selected_position = position;
             }
         });
@@ -165,20 +153,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (display_quantity.equals("")) {
                         Toast.makeText(MainActivity.this, "Please enter quantity", Toast.LENGTH_LONG).show();
                     } else {
-                        if (Integer.parseInt(display_quantity) > product_array.get(selected_position).getQty()) {
+                        if (Integer.parseInt(display_quantity) > ((MyApp)getApplication()).getList().get(selected_position).getQty()) {
                             Toast.makeText(MainActivity.this, "OUT OF STOCK", Toast.LENGTH_LONG).show();
                         } else {
-                            double total_amount = Integer.parseInt(display_quantity) * product_array.get(selected_position).getPrice();
+                            double total_amount = Integer.parseInt(display_quantity) * ((MyApp)getApplication()).getList().get(selected_position).getPrice();
                             tv_total.setText(String.valueOf(total_amount));
-                            int remain_qty = product_array.get(selected_position).getQty() - Integer.parseInt(display_quantity);
-                            product_array.get(selected_position).setQty(remain_qty);
+                            int remain_qty = ((MyApp)getApplication()).getList().get(selected_position).getQty() - Integer.parseInt(display_quantity);
+                            ((MyApp)getApplication()).getList().get(selected_position).setQty(remain_qty);
                             mainadapter.notifyDataSetChanged();
 
-                            History h1 = new History(product_array.get(selected_position).getName(),total_amount,Integer.valueOf(display_quantity),new Date().toString());
-                            history_product_array.add(h1);
+                            History h1 = new History(((MyApp)getApplication()).getList().get(selected_position).getName(), total_amount, Integer.valueOf(display_quantity), new Date().toString());
+                            ((MyApp)getApplication()).getHistoryList();
+                            ((MyApp)getApplication()).addNewHistoryToDO(h1);
                             new AlertDialog.Builder(MainActivity.this)
                                     .setTitle("Thank you for your Purchase")
-                                    .setMessage("Your Purchase is " + display_quantity + " " + product_array.get(selected_position).getName() + " for " + total_amount)
+                                    .setMessage("Your Purchase is " + display_quantity + " " + ((MyApp)getApplication()).getList().get(selected_position).getName() + " for " + total_amount)
                                     // A null listener allows the button to dismiss the dialog and take no further action.
                                     .setCancelable(true)
                                     .show();
@@ -187,9 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.btn_manager:
-                Intent intent = new Intent(MainActivity.this,ManagerActivity.class);
-                intent.putExtra("mylist", history_product_array);
-                intent.putExtra("remain_list", product_array);
+                Intent intent = new Intent(MainActivity.this, ManagerActivity.class);
                 startActivity(intent);
                 break;
         }

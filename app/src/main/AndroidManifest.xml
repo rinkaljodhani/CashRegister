@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,9 +16,9 @@
         <activity
             android:name=".HistoryDetailsActivity"
             android:exported="false">
-           <!-- <meta-data
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HistoryActivity" />-->
+                android:value=".HistoryActivity" />
         </activity>
         <activity
             android:name=".HistoryActivity"

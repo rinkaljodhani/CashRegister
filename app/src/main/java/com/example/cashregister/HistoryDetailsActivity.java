@@ -16,31 +16,22 @@ public class HistoryDetailsActivity extends AppCompatActivity {
     TextView tv_name;
     TextView tv_amount;
     TextView tv_date;
+    int position ;
     History history_data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_details);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findView();
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id==android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void findView() {
 
-        history_data = (History) getIntent().getSerializableExtra("mylist");
+        position = getIntent().getIntExtra("position",0);
 
+        history_data = ((MyApp)getApplication()).getHistoryList().get(position);
         tv_amount = findViewById(R.id.tv_amount);
         tv_name = findViewById(R.id.tv_name);
         tv_date = findViewById(R.id.tv_date);

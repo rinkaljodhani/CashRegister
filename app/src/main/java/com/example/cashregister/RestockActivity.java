@@ -24,7 +24,6 @@ public class RestockActivity extends AppCompatActivity implements View.OnClickLi
     Button btn_ok,btn_cancel;
     int selected_position = -1;
     Mainadapter mainadapter;
-    ArrayList<Product> remain_arraylist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +35,6 @@ public class RestockActivity extends AppCompatActivity implements View.OnClickLi
 
     private void findView() {
 
-        remain_arraylist = new ArrayList<>();
-
-        remain_arraylist = (ArrayList<Product>) getIntent().getSerializableExtra("remain_list");
-
         et_qty = findViewById(R.id.et_qty);
         btn_ok = findViewById(R.id.btn_ok);
         btn_cancel = findViewById(R.id.btn_cancel);
@@ -48,7 +43,7 @@ public class RestockActivity extends AppCompatActivity implements View.OnClickLi
         btn_ok.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
 
-        mainadapter = new Mainadapter(RestockActivity.this, remain_arraylist);
+        mainadapter = new Mainadapter(RestockActivity.this, ((MyApp)getApplication()).getList());
         lv_list.setAdapter((ListAdapter) mainadapter);
 
         lv_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,10 +66,10 @@ public class RestockActivity extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(RestockActivity.this,"enter quantity",Toast.LENGTH_LONG).show();
                 }else{
                     if(selected_position == -1 ) {
-                        Toast.makeText(RestockActivity.this, "selectany product", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RestockActivity.this, "select any product", Toast.LENGTH_LONG).show();
                     }else{
-                        int total_qty = remain_arraylist.get(selected_position).getQty()+Integer.parseInt(et_qty.getText().toString());
-                        remain_arraylist.get(selected_position).setQty(total_qty);
+                        int total_qty = ((MyApp)getApplication()).getList().get(selected_position).getQty()+Integer.parseInt(et_qty.getText().toString());
+                        ((MyApp)getApplication()).getList().get(selected_position).setQty(total_qty);
                         mainadapter.notifyDataSetChanged();
                     }
                 }
@@ -82,7 +77,6 @@ public class RestockActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btn_cancel:
                 et_qty.setText("");
                 Intent intentrestock = new Intent(RestockActivity.this, MainActivity.class);
-                intentrestock.putExtra("remain_data",remain_arraylist);
                 startActivity(intentrestock);
                 break;
 
