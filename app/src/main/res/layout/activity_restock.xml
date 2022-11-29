@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RestockActivity">
+
+    <EditText
+        android:inputType="number"
+        android:id="@+id/et_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter new Quantity"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="OK"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel"
+        app:layout_constraintTop_toBottomOf="@id/et_qty"
+        app:layout_constraintHorizontal_chainStyle="packed"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_ok"
+        app:layout_constraintTop_toBottomOf="@id/et_qty" />
+
+    <ListView
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:id="@+id/lv_list"
+        app:layout_constraintTop_toBottomOf="@id/btn_ok"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
